@@ -57,3 +57,24 @@ cd /home/steam
 - This is still `x86` emulation on `ARM64`, so performance can be lower than on a native `x86_64` host.
 - Open `UDP 27015`, `TCP 27015`, and `UDP 27005` in your firewall or cloud security rules.
 - In some clients, `connect IP` can be more reliable than `connect IP:PORT`.
+
+## Credits
+
+This repository builds on upstream tools and projects:
+
+- LinuxGSM, for the server management framework and base modules used here
+- Valve, for SteamCMD and Left 4 Dead 2 dedicated server files
+- box86 and box64, for x86 and x86_64 compatibility on ARM64 hosts
+- Ryan Fortner's Debian repositories for box86 and box64 packages used by the installer
+
+This repository mainly provides ARM64 install automation, wrappers, and compatibility patches around those upstream projects.
+
+Some files in `linuxgsm-modules/` are adapted from LinuxGSM and retain upstream attribution headers.
+
+## Licensing and Attribution Notes
+
+- This repository includes original ARM64 wrapper and installer code, plus adapted upstream integration files.
+- Upstream projects keep their own licenses, copyright notices, and trademarks.
+- SteamCMD and Left 4 Dead 2 server files are downloaded from Valve during installation and are not relicensed by this repository.
+- Files under `linuxgsm-modules/` that were adapted from LinuxGSM should keep their upstream attribution headers.
+- If you plan to publish or redistribute this repository, add a top-level `LICENSE` file for the original code in this repo.
