@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+export STEAMOS=1
+export STEAM_RUNTIME=1
+export DBUS_FATAL_WARNINGS=0
+
+cd "${HOME}/steamcmd"
+exec box86 ./linux32/steamcmd "$@"
