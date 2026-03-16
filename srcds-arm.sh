@@ -13,9 +13,21 @@ export LD_LIBRARY_PATH=".:bin:${armhf_lib_paths}:${LD_LIBRARY_PATH:-}"
 # Make both x86 runtime libraries bundled with box86 and armhf wrapped libraries
 # visible for x86 plugin loads such as MetaMod and SourceMod.
 export BOX86_LD_LIBRARY_PATH=".:bin:${box86_x86_lib_paths}:${armhf_lib_paths}:${BOX86_LD_LIBRARY_PATH:-}"
-compat_preload="${serverfiles}/bin/libisoc23compat.so"
-if [ -f "${compat_preload}" ]; then
-	export BOX86_LD_PRELOAD="${compat_preload}:${BOX86_LD_PRELOAD:-}"
+preload_libs=()
+for compat_preload in \
+	"${serverfiles}/bin/libisoc23compat.so" \
+	"${serverfiles}/bin/libtier0compat.so"
+do
+	if [ -f "${compat_preload}" ]; then
+		preload_libs+=("${compat_preload}")
+	fi
+done
+if [ "${#preload_libs[@]}" -gt 0 ]; then
+	preload_value="$(IFS=:; printf '%s' "${preload_libs[*]}")"
+	if [ -n "${BOX86_LD_PRELOAD:-}" ]; then
+		preload_value="${preload_value}:${BOX86_LD_PRELOAD}"
+	fi
+	export BOX86_LD_PRELOAD="${preload_value}"
 fi
 export BOX86_DYNAREC=1
 export BOX86_DYNAREC_BIGBLOCK=0

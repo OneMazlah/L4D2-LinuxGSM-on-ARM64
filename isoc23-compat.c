@@ -6,6 +6,10 @@
 #include <time.h>
 #include <wchar.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef pthread_cond_clockwait
 #undef pthread_cond_clockwait
 #endif
@@ -124,3 +128,7 @@ int pthread_cond_clockwait(pthread_cond_t *cond, pthread_mutex_t *mutex, clockid
 
 	return pthread_cond_timedwait(cond, mutex, &realtime_deadline);
 }
+
+#ifdef __cplusplus
+}
+#endif
