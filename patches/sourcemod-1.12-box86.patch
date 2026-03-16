@@ -1,0 +1,80 @@
+diff --git a/AMBuildScript b/AMBuildScript
+index 4eb77bc..65d7313 100644
+--- a/AMBuildScript
++++ b/AMBuildScript
+@@ -239,10 +239,11 @@ class SMConfig(object):
+       '-pipe',
+       '-fno-strict-aliasing',
+       '-Wall',
+-      '-Werror',
+       '-Wno-unused',
+       '-Wno-switch',
++      '-Wno-sign-compare',
+       '-Wno-array-bounds',
++      '-Wno-format-truncation',
+       '-Wno-unknown-pragmas',
+       '-Wno-dangling-else',
+       '-fvisibility=hidden',
+@@ -664,7 +665,6 @@ else:
+     'extensions/dhooks/AMBuilder',
+     'extensions/geoip/AMBuilder',
+     'extensions/mysql/AMBuilder',
+-    'extensions/pgsql/AMBuilder',
+     'extensions/regex/AMBuilder',
+     'extensions/sdkhooks/AMBuilder',
+     'extensions/sdktools/AMBuilder',
+@@ -676,7 +676,6 @@ else:
+ 
+   if builder.backend == 'amb2':
+     BuildScripts += [
+-      'plugins/AMBuilder',
+       'tools/buildbot/PackageHelpers',
+       'tools/buildbot/PackageScript',
+     ]
+diff --git a/core/logic/MemoryUtils.cpp b/core/logic/MemoryUtils.cpp
+index 5c72c34..f19645f 100644
+--- a/core/logic/MemoryUtils.cpp
++++ b/core/logic/MemoryUtils.cpp
+@@ -135,7 +135,7 @@ void *MemoryUtils::ResolveSymbol(void *handle, const char *symbol)
+ 	#define ELF_SYM_TYPE ELF64_ST_TYPE
+ #endif
+ 
+-	struct link_map *dlmap;
++	struct link_map *dlmap;
+ 	struct stat dlstat;
+ 	int dlfile;
+ 	uintptr_t map_base;
+@@ -147,14 +147,25 @@ void *MemoryUtils::ResolveSymbol(void *handle, const char *symbol)
+ 	uint32_t symbol_count;
+ 	LibSymbolTable *libtable;
+ 	SymbolTable *table;
+-	Symbol *symbol_entry;
+-
+-	dlmap = (struct link_map *)handle;
+-	symtab_hdr = NULL;
+-	strtab_hdr = NULL;
+-	table = NULL;
+-	
+-	/* See if we already have a symbol table for this library */
++	Symbol *symbol_entry;
++
++	dlmap = NULL;
++	symtab_hdr = NULL;
++	strtab_hdr = NULL;
++	table = NULL;
++	symbol_entry = NULL;
++
++	if (handle == NULL)
++	{
++		return NULL;
++	}
++
++	if (dlinfo(handle, RTLD_DI_LINKMAP, &dlmap) != 0 || dlmap == NULL || dlmap->l_name == NULL)
++	{
++		return NULL;
++	}
++	
++	/* See if we already have a symbol table for this library */
+ 	for (size_t i = 0; i < m_SymTables.size(); i++)
+ 	{
+ 		libtable = m_SymTables[i];
