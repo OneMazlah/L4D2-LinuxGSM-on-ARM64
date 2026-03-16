@@ -58,6 +58,20 @@ cd /home/steam
 - Open `UDP 27015`, `TCP 27015`, and `UDP 27005` in your firewall or cloud security rules.
 - In some clients, `connect IP` can be more reliable than `connect IP:PORT`.
 
+## SourceMod On box86
+
+This repo now includes the compatibility pieces used to get a custom `MetaMod + SourceMod`
+core running on `box86`:
+
+- `srcds-arm.sh`
+- `isoc23-compat.c`
+- `isoc23-compat.map`
+- `patches/mmsource-1.12-box86.patch`
+- `patches/sourcemod-1.12-box86.patch`
+- `SOURCEMOD-BOX86.md`
+
+Read `SOURCEMOD-BOX86.md` before attempting a future SourceMod upgrade on ARM64.
+
 ## Credits
 
 This repository builds on upstream tools and projects:
