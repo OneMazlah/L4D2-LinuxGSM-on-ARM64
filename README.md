@@ -64,13 +64,30 @@ This repo now includes the compatibility pieces used to get a custom `MetaMod + 
 core running on `box86`:
 
 - `srcds-arm.sh`
+- `build-box86-shims.sh`
+- `build-sm-default-plugins.sh`
 - `isoc23-compat.c`
+- `tier0-compat.cpp`
 - `isoc23-compat.map`
 - `patches/mmsource-1.12-box86.patch`
 - `patches/sourcemod-1.12-box86.patch`
 - `SOURCEMOD-BOX86.md`
 
 Read `SOURCEMOD-BOX86.md` before attempting a future SourceMod upgrade on ARM64.
+It records the working `box86` formula, the shim build, and how to rebuild the
+latest default SourceMod plugins with a native ARM64 `spcomp`.
+
+For `L4D2` coop/campaign flow, keep these stock SourceMod map-rotation plugins
+disabled unless you replace them with `L4D2`-aware logic:
+
+- `mapchooser.smx`
+- `nextmap.smx`
+- `nominations.smx`
+- `randomcycle.smx`
+- `rockthevote.smx`
+
+The stock versions can override chapter progression and send players to an
+unrelated map at the end of a chapter.
 
 ## Credits
 
