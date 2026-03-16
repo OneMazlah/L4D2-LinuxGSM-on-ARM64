@@ -1,0 +1,25 @@
+GLIBC_2.4 {
+	global:
+		__mbsnrtowcs_chk;
+		__mbsrtowcs_chk;
+		__wmemset_chk;
+};
+
+GLIBC_2.34 {
+	global:
+		pthread_cond_clockwait;
+} GLIBC_2.4;
+
+GLIBC_2.38 {
+	global:
+		__isoc23_fscanf;
+		__isoc23_scanf;
+		__isoc23_sscanf;
+		__isoc23_strtol;
+		__isoc23_strtoll;
+		__isoc23_strtoul;
+		__isoc23_strtoull;
+		__isoc23_vfscanf;
+		__isoc23_vscanf;
+		__isoc23_vsscanf;
+} GLIBC_2.34;
