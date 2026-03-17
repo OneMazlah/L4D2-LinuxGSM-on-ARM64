@@ -27,6 +27,76 @@ The installer will:
 - install the ARM64 wrappers and LinuxGSM patches
 - optionally run Steam login and install/update `L4D2`
 
+## Docker
+
+This repo also includes a `Dockerfile` for `ARM64` hosts. The image prepares:
+
+- `box86` and `box64`
+- `SteamCMD`
+- `LinuxGSM` bootstrap support
+- the ARM64 wrapper/config files from this repo
+
+On first container start, the entrypoint downloads `LinuxGSM` if it is not already
+present. Valve game files are not bundled; install those at runtime with your own
+Steam account or mounted persistent data.
+
+Build the image:
+
+```bash
+docker build -t l4d2-arm .
+```
+
+Suggested persistent mounts:
+
+- `/home/steam/serverfiles`
+- `/home/steam/lgsm/config-lgsm`
+- `/home/steam/log`
+
+Run an interactive bootstrap shell:
+
+```bash
+docker run --rm -it \
+  --platform linux/arm64 \
+  --name l4d2-arm-shell \
+  -v l4d2-serverfiles:/home/steam/serverfiles \
+  -v l4d2-config:/home/steam/lgsm/config-lgsm \
+  -v l4d2-log:/home/steam/log \
+  --entrypoint bash \
+  l4d2-arm
+```
+
+From there, switch to the `steam` user and run the normal helper:
+
+```bash
+sudo -iu steam
+~/bin/l4d2-steamcmd-install.sh
+```
+
+Run the server container after the game files are installed:
+
+```bash
+docker run -d \
+  --platform linux/arm64 \
+  --name l4d2-arm \
+  -p 27015:27015/tcp \
+  -p 27015:27015/udp \
+  -p 27005:27005/udp \
+  -v l4d2-serverfiles:/home/steam/serverfiles \
+  -v l4d2-config:/home/steam/lgsm/config-lgsm \
+  -v l4d2-log:/home/steam/log \
+  l4d2-arm
+```
+
+For unattended first-time install, the container supports:
+
+```bash
+-e AUTO_INSTALL_L4D2=1
+-e STEAM_USERNAME=your_steam_username
+-e STEAM_PASSWORD=your_steam_password
+```
+
+Use that only if you accept Steam credentials being visible in container metadata.
+
 ## Steam Login
 
 Steam credentials are not stored in the repo. These helpers prompt interactively:
