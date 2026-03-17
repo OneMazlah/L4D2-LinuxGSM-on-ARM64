@@ -5,6 +5,11 @@ This file records the working formula used on `2026-03-16` to get a custom
 
 It exists so the procedure is not lost if chat history is gone later.
 
+This document is for maintainers, not normal server admins.
+
+If you only want to install the working custom build, use the GitHub Release
+asset `sourcemod-box86-l4d2-<version>.tar.gz` and skip this file.
+
 ## Working State
 
 - Live server target: `Left 4 Dead 2` on ARM64 using `box86`
@@ -256,6 +261,9 @@ Expected good signs:
 - `sm plugins list` shows `24` stock plugins at `1.12.0-manual`
 
 ### 8. Package a Release Archive
+
+This step is for publishing the custom `box86` build to GitHub Releases.
+It is not required for normal users installing a prebuilt release.
 
 For a public GitHub Release, prefer packaging from a clean staging tree that
 contains only the files you intend to publish.

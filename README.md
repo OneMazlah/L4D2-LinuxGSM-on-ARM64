@@ -131,7 +131,33 @@ cd /home/steam
 ## SourceMod On box86
 
 This repo now includes the compatibility pieces used to get a custom `MetaMod + SourceMod`
-core running on `box86`:
+core running on `box86`.
+
+### For Normal Users
+
+If you only want a ready-to-use `SourceMod + MetaMod` package for `L4D2` on
+`ARM64 + box86`, do not start with the build notes.
+
+Use the prebuilt GitHub Release asset instead:
+
+- `sourcemod-box86-l4d2-<version>.tar.gz`
+
+That release asset is the custom `box86` build. It is not the official upstream
+SourceMod archive.
+
+Normal user flow:
+
+1. Download the latest `sourcemod-box86-l4d2-<version>.tar.gz` from GitHub Releases.
+2. Extract it into your server root.
+3. Replace your wrapper with `srcds-arm.sh` if needed.
+4. Edit `addons/sourcemod/configs/admins_simple.ini` and other local configs after deployment.
+
+### For Maintainers
+
+Only read `SOURCEMOD-BOX86.md` if you want to rebuild, update, or package a new
+release of the custom `box86` version.
+
+This repo includes these maintainer files:
 
 - `srcds-arm.sh`
 - `build-box86-shims.sh`
@@ -144,9 +170,8 @@ core running on `box86`:
 - `patches/sourcemod-1.12-box86.patch`
 - `SOURCEMOD-BOX86.md`
 
-Read `SOURCEMOD-BOX86.md` before attempting a future SourceMod upgrade on ARM64.
-It records the working `box86` formula, the shim build, and how to rebuild the
-latest default SourceMod plugins with a native ARM64 `spcomp`.
+`SOURCEMOD-BOX86.md` records the working `box86` formula, the shim build, and
+how to rebuild the latest default SourceMod plugins with a native ARM64 `spcomp`.
 
 After you have a clean release tree or a verified live serverfiles tree, use
 `make-sourcemod-release-archive.sh` to generate GitHub Release assets:
