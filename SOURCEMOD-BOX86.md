@@ -52,6 +52,8 @@ multiple runtime assumptions broke at once:
   - rebuilds the two compatibility shims with the known-good flags
 - [build-sm-default-plugins.sh](build-sm-default-plugins.sh)
   - rebuilds the stock SourceMod plugin set with a native ARM64 `spcomp`
+- [make-sourcemod-release-archive.sh](make-sourcemod-release-archive.sh)
+  - packages public-ready release assets as `tar.gz`, optional `.zip`, and checksums
 - [isoc23-compat.c](isoc23-compat.c)
   - provides the glibc compatibility shim symbols expected by newer x86 binaries
 - [tier0-compat.cpp](tier0-compat.cpp)
@@ -252,6 +254,43 @@ Expected good signs:
 - `sm_slay` replies with usage or a target message instead of `Unknown command`
 - `sm exts list` shows `SDK Tools (1.12.0.1)`
 - `sm plugins list` shows `24` stock plugins at `1.12.0-manual`
+
+### 8. Package a Release Archive
+
+For a public GitHub Release, prefer packaging from a clean staging tree that
+contains only the files you intend to publish.
+
+Example from a curated staging directory:
+
+```bash
+/path/to/l4d2-arm/make-sourcemod-release-archive.sh \
+  --version 1.12.0.1 \
+  --from-staging /tmp/sm112-release-tree
+```
+
+Quick private packaging from a verified live server is also supported:
+
+```bash
+/path/to/l4d2-arm/make-sourcemod-release-archive.sh \
+  --version 1.12.0.1 \
+  --from-serverfiles /home/steam/serverfiles
+```
+
+That mode intentionally scrubs the most common sensitive files before the
+archive is created:
+
+- `addons/sourcemod/configs/admins.cfg`
+- `addons/sourcemod/configs/admins_simple.ini`
+- `addons/sourcemod/configs/databases.cfg`
+- `addons/sourcemod/data/`
+- `addons/sourcemod/logs/`
+- `addons/sourcemod/plugins.backup-*`
+
+Outputs:
+
+- `dist/sourcemod-box86-l4d2-<version>.tar.gz`
+- `dist/sourcemod-box86-l4d2-<version>.zip` when `zip` is installed
+- `dist/checksums.txt`
 
 ## Admin Authentication Note
 

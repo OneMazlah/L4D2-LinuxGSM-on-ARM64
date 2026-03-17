@@ -136,6 +136,7 @@ core running on `box86`:
 - `srcds-arm.sh`
 - `build-box86-shims.sh`
 - `build-sm-default-plugins.sh`
+- `make-sourcemod-release-archive.sh`
 - `isoc23-compat.c`
 - `tier0-compat.cpp`
 - `isoc23-compat.map`
@@ -146,6 +147,22 @@ core running on `box86`:
 Read `SOURCEMOD-BOX86.md` before attempting a future SourceMod upgrade on ARM64.
 It records the working `box86` formula, the shim build, and how to rebuild the
 latest default SourceMod plugins with a native ARM64 `spcomp`.
+
+After you have a clean release tree or a verified live serverfiles tree, use
+`make-sourcemod-release-archive.sh` to generate GitHub Release assets:
+
+```bash
+./make-sourcemod-release-archive.sh \
+  --version 1.12.0.1 \
+  --from-serverfiles /home/steam/serverfiles
+```
+
+That creates `dist/sourcemod-box86-l4d2-<version>.tar.gz`, an optional `.zip`
+if `zip` is installed, and `dist/checksums.txt`.
+
+For public releases, prefer a clean staging tree over a live serverfiles tree.
+The live packaging mode scrubs the common sensitive configs, but a curated
+staging tree is still safer.
 
 For `L4D2` coop/campaign flow, keep these stock SourceMod map-rotation plugins
 disabled unless you replace them with `L4D2`-aware logic:
